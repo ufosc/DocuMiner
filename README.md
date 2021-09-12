@@ -1,4 +1,4 @@
-# TextMine
+# DocuMiner
 A production-ready pipeline for text mining and subject indexing
 
 ## Want to Contribute?

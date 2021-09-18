@@ -2,7 +2,7 @@ import nltk
 import os
 from bs4 import BeautifulSoup
 import requests
-# nltk.download('punkt')
+nltk.download('punkt')
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.util import filestring
 
@@ -11,7 +11,19 @@ def main():
     words = []
     sentences = []
     
+    # UNCOMMENT FOR FUNCTIONS
+
     URL(words, sentences)
+
+    # singleFile(fileNames)
+    # tokenizeFiles(fileNames)
+
+    # multipleFiles(fileNames)
+    # tokenizeFiles(filNames)
+
+    # directory(fileNames)
+    # tokenizeFiles(fileNames)
+
 
 
 # Tokenizes from URL
@@ -19,18 +31,19 @@ def URL(words, sentences):
     url = input("Enter URL: ")
     html = requests.get(url)
     raw = BeautifulSoup(html.text, 'html.parser').get_text()
+    print(raw)
     wordTokens = word_tokenize(raw)
     sentences = sent_tokenize(raw)
     # Turns text into nltk object, concordance searches and returns search keyword
-    wordObj = nltk.Text(wordTokens)
-    words = wordObj.concordance("loop")
+    # wordObj = nltk.Text(wordTokens)
+    # words = wordObj.concordance("SEARCH_KEY_WORD")
     return words, sentences
 
 
 # Pulls filenames from Directory
 def directory(fileNames):
     path = os.getcwd()
-    usrInput = input("Enter full path (ENTER for working directory)")
+    usrInput = input("Enter full path (ENTER for working directory): ")
     if usrInput != "": path = usrInput
     dirFiles = [x for x in os.listdir(path) if x.endswith(".txt")]
     for file in dirFiles: fileNames.append(file) 

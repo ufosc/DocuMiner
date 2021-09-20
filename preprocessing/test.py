@@ -1,4 +1,3 @@
-from nltk.util import filestring
 from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
 import os
@@ -14,29 +13,38 @@ def main():
 
     # UNCOMMENT FOR FUNCTIONS
 
-    URL(words, sentences)
+    words, sentences = URL(words, sentences)
 
     # singleFile(fileNames)
     # tokenizeFiles(fileNames)
 
     # multipleFiles(fileNames)
-    # tokenizeFiles(filNames)
-
-    # directory(fileNames)
     # tokenizeFiles(fileNames)
+
+    # fileNames = directory(fileNames)
+    # words, sentences = tokenizeFiles(fileNames)
+
+    print("words: ", words, "\nsentences: ", sentences)
 
 
 # Tokenizes from URL
 def URL(words, sentences):
     url = input("Enter URL: ")
-    html = requests.get(url)
+    try:
+        html = requests.get(url)
+    except requests.exceptions.HTTPError as err:
+        raise SystemExit(err)
+
     raw = BeautifulSoup(html.text, 'html.parser').get_text()
-    print(raw)
+
+    searchWord = input(
+        "Enter search keyword (ENTER to parse entire html page): ")
     wordTokens = word_tokenize(raw)
     sentences = sent_tokenize(raw)
-    # Turns text into nltk object, concordance searches and returns search keyword
-    # wordObj = nltk.Text(wordTokens)
-    # words = wordObj.concordance("SEARCH_KEY_WORD")
+    # Turns text into nltk object, concordance searches and returns keyword w/text around it in array
+    if(searchWord != ""):
+        wordObj = nltk.Text(wordTokens)
+        words = wordObj.concordance_list(searchWord, width=150)
     return words, sentences
 
 
@@ -49,6 +57,7 @@ def directory(fileNames):
     dirFiles = [x for x in os.listdir(path) if x.endswith(".txt")]
     for file in dirFiles:
         fileNames.append(file)
+    return fileNames
 
 # Single and Multiple files
 
@@ -70,18 +79,22 @@ def multipleFiles(fileNames):
 
 # Tokenizes txt files
 def tokenizeFiles(fileNames):
+    words = []
+    sentences = []
     try:
         for fileName in fileNames:
             with open(fileName, encoding='utf-8') as file:
                 text = file.read()
-                words = word_tokenize(text)
-                sentences = sent_tokenize(text)
+                words.append(word_tokenize(text))
+                sentences.append(sent_tokenize(text))
                 print('Words: ', words, '\nSentences: ', sentences)
 
     except IOError as e:
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
     except OSError:
         print(f"OS error trying to open {fileName}")
+
+    return words, sentences
 
 
 main()

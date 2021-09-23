@@ -3,7 +3,7 @@ from nltk.corpus import stopwords
 
 def TagText(text, splitByWord = True,removeStop = True, removePunc = True):
     if splitByWord:
-        tokens = nltk.word_tokenize(sentence)
+        tokens = nltk.word_tokenize(text)
     else:
         tokens = text
     

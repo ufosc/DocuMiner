@@ -1,50 +1,58 @@
+from requests.models import MissingSchema
 from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
-import os
+import os, sys
 from bs4 import BeautifulSoup
 import requests
-nltk.download('punkt')
 
 
 def main():
     fileNames = []
     words = []
     sentences = []
-
+    path = os.getcwd()
+    
     # UNCOMMENT FOR FUNCTIONS
 
     words, sentences = URL(words, sentences)
 
     # singleFile(fileNames)
-    # tokenizeFiles(fileNames)
+    # words, sentences = tokenizeFiles(fileNames, path)
 
-    # multipleFiles(fileNames)
-    # tokenizeFiles(fileNames)
+    # fileNames = multipleFiles(fileNames)
+    # words, sentences = tokenizeFiles(fileNames, path)
 
-    # fileNames = directory(fileNames)
-    # words, sentences = tokenizeFiles(fileNames)
+    # fileNames, path = directory(fileNames)
+    # words, sentences = tokenizeFiles(fileNames, path)
 
-    print("words: ", words, "\nsentences: ", sentences)
+    print('Words: ', words, '\nSentences: ', sentences)
 
 
-# Tokenizes from URL
+# Scrapes and Tokenizes txt from URL
 def URL(words, sentences):
+    # Scrapes data from URL
     url = input("Enter URL: ")
     try:
         html = requests.get(url)
-    except requests.exceptions.HTTPError as err:
-        raise SystemExit(err)
+    except MissingSchema: 
+        print("Invalid URL, no schema supplied. Perhaps you meant http://{0}?".format(url))
+        sys.exit()
 
     raw = BeautifulSoup(html.text, 'html.parser').get_text()
 
     searchWord = input(
         "Enter search keyword (ENTER to parse entire html page): ")
     wordTokens = word_tokenize(raw)
+    words = word_tokenize(raw)
     sentences = sent_tokenize(raw)
     # Turns text into nltk object, concordance searches and returns keyword w/text around it in array
     if(searchWord != ""):
         wordObj = nltk.Text(wordTokens)
+        # Prints out concordance to terminal (VISUAL), does not save to array
+        wordObj.concordance(searchWord)
+        # Saves concordance to array wrapped in an nltk object type
         words = wordObj.concordance_list(searchWord, width=150)
+
     return words, sentences
 
 
@@ -54,17 +62,20 @@ def directory(fileNames):
     usrInput = input("Enter full path (ENTER for working directory): ")
     if usrInput != "":
         path = usrInput
-    dirFiles = [x for x in os.listdir(path) if x.endswith(".txt")]
-    for file in dirFiles:
-        fileNames.append(file)
-    return fileNames
+    if(os.path.exists(path)):
+        dirFiles = [x for x in os.listdir(path) if x.endswith(".txt")]
+        for file in dirFiles: fileNames.append(file)
+        return fileNames, path
+    else:
+        print("ERROR: directory not found")
+        return fileNames, path
 
-# Single and Multiple files
+# Generates list of Single or Multiple files
 
 
 def singleFile(fileNames):
     usrInput = input("Enter file name: ")
-    fileNames = [usrInput]
+    fileNames.append(usrInput)
     return fileNames
 
 
@@ -77,17 +88,16 @@ def multipleFiles(fileNames):
     return fileNames
 
 
-# Tokenizes txt files
-def tokenizeFiles(fileNames):
+# Tokenizes txt files, run after multipleFiles() or singleFile()
+def tokenizeFiles(fileNames, path):
     words = []
     sentences = []
     try:
         for fileName in fileNames:
-            with open(fileName, encoding='utf-8') as file:
+            with open(os.path.join(path, fileName), encoding='utf-8') as file:
                 text = file.read()
                 words.append(word_tokenize(text))
                 sentences.append(sent_tokenize(text))
-                print('Words: ', words, '\nSentences: ', sentences)
 
     except IOError as e:
         print("I/O error({0}): {1}".format(e.errno, e.strerror))

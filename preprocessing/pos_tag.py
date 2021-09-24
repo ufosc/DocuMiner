@@ -16,7 +16,5 @@ def TagText(text, splitByWord = True,removeStop = True, removePunc = True):
         
     return nltk.pos_tag(tokens)
 
-TagText(sentence)
-
 def filterByTag(tagArray,pos): #function filters by pos tags
     return [tagSet for tagSet in tagArray if tagSet[1] == pos]

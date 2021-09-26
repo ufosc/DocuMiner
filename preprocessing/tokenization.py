@@ -7,30 +7,8 @@ import requests
 import pdfplumber
 import docx2txt
 
-def main():
-    fileNames = []
-    words = []
-    sentences = []
-    path = os.getcwd()
-    
-    # UNCOMMENT FOR FUNCTIONS
-
-    text = URL(words, sentences)
-
-    # singleFile(fileNames)
-    # words, sentences = tokenizeFiles(fileNames, path)
-
-    # fileNames = multipleFiles(fileNames)
-    # text = tokenizeFiles(fileNames, path)
-
-    # fileNames, path = directory(fileNames)
-    # text = tokenizeFiles(fileNames, path)
-
-    print('Text: ', text)
-
-
 # Scrapes and Tokenizes txt from URL
-def URL(words, sentences):
+def URL():
     # Scrapes data from URL
     url = input("Enter URL: ")
     try:
@@ -107,5 +85,3 @@ def tokenizeFiles(fileNames, path):
 
     return textArray
 
-
-main()

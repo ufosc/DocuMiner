@@ -4,7 +4,8 @@ import nltk
 import os, sys
 from bs4 import BeautifulSoup
 import requests
-
+import pdfplumber
+import docx2txt
 
 def main():
     fileNames = []
@@ -14,7 +15,7 @@ def main():
     
     # UNCOMMENT FOR FUNCTIONS
 
-    words, sentences = URL(words, sentences)
+    #words, sentences = URL(words, sentences)
 
     # singleFile(fileNames)
     # words, sentences = tokenizeFiles(fileNames, path)
@@ -22,8 +23,8 @@ def main():
     # fileNames = multipleFiles(fileNames)
     # words, sentences = tokenizeFiles(fileNames, path)
 
-    # fileNames, path = directory(fileNames)
-    # words, sentences = tokenizeFiles(fileNames, path)
+    fileNames, path = directory(fileNames)
+    words, sentences = tokenizeFiles(fileNames, path)
 
     print('Words: ', words, '\nSentences: ', sentences)
 
@@ -63,7 +64,7 @@ def directory(fileNames):
     if usrInput != "":
         path = usrInput
     if(os.path.exists(path)):
-        dirFiles = [x for x in os.listdir(path) if x.endswith(".txt")]
+        dirFiles = [x for x in os.listdir(path) if x.endswith((".txt", ".pdf", ".docx"))]
         for file in dirFiles: fileNames.append(file)
         return fileNames, path
     else:
@@ -94,8 +95,23 @@ def tokenizeFiles(fileNames, path):
     sentences = []
     try:
         for fileName in fileNames:
-            with open(os.path.join(path, fileName), encoding='utf-8') as file:
-                text = file.read()
+            if fileName.endswith(".txt"):
+                with open(os.path.join(path, fileName), encoding='utf-8') as file:
+                    text = file.read()
+                    words.append(word_tokenize(text))
+                    sentences.append(sent_tokenize(text))
+            
+            elif fileName.endswith(".pdf"):
+                with pdfplumber.open(os.path.join(path, fileName)) as file:
+                    text = ""
+                    pages = file.pages
+                    for page in pages:
+                        text += page.extract_text()
+                    words.append(word_tokenize(text))
+                    sentences.append(sent_tokenize(text))
+            
+            elif fileName.endswith(".docx"):
+                text = docx2txt.process(os.path.join(path, fileName))
                 words.append(word_tokenize(text))
                 sentences.append(sent_tokenize(text))
 

@@ -3,11 +3,11 @@ import os
 import nltk, spacy
 import en_core_web_sm
 from nltk.corpus import stopwords
-nltk.download('averaged_perceptron_tagger')
+# nltk.download('averaged_perceptron_tagger')
 
 
 def main():
-    path = os.getcwd()
+    path = ''
     fileNames = []
     text = []
     
@@ -15,10 +15,10 @@ def main():
 
     # text.append(tokenization.URL())
 
-    # fileNames = tokenization.singleFile(fileNames)
+    # fileNames, path = tokenization.singleFile(fileNames)
     # text = tokenization.tokenizeFiles(fileNames, path)
 
-    fileNames = tokenization.multipleFiles(fileNames)
+    fileNames, path = tokenization.multipleFiles(fileNames)
     text = tokenization.tokenizeFiles(fileNames, path)
 
     # fileNames, path = tokenization.directory(fileNames)

@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 import pdfplumber
 import docx2txt
+# nltk.download('punkt')
 
 # Scrapes and Tokenizes txt from URL
 def URL():
@@ -41,18 +42,24 @@ def directory(fileNames):
 
 
 def singleFile(fileNames):
+    path = os.getcwd
+    pathInput = input("Enter directory with file (ENTER for working directory): ")
     usrInput = input("Enter file name: ")
     fileNames.append(usrInput)
-    return fileNames
+    if pathInput != "": path = pathInput
+    return fileNames, path
 
 
 def multipleFiles(fileNames):
+    path = os.getcwd
+    pathInput = input("Enter directory with files (ENTER for working directory): ")
     usrInput = input("Enter file name: ")
     fileNames = [usrInput]
     while usrInput != "":
-        fileNames.append(usrInput)
         usrInput = input("Enter file name (ENTER to terminate): ")
-    return fileNames
+        fileNames.append(usrInput)
+    if pathInput != "": path = pathInput
+    return fileNames, path
 
 
 # Tokenizes txt files, run after multipleFiles() or singleFile()

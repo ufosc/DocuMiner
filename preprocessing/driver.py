@@ -1,4 +1,4 @@
-import tokenization, spacy_entity_preprocessing, pos_tag
+import tokenization, spacy_entity_preprocessing, pos_tag, ranker
 import os
 import nltk, spacy
 import en_core_web_sm
@@ -10,6 +10,7 @@ def main():
     path = ''
     fileNames = []
     text = []
+    documents = {}
     
     # UNCOMMENT FOR FUNCTIONS
 
@@ -19,8 +20,12 @@ def main():
     # text = tokenization.tokenizeFiles(fileNames, path)
 
     fileNames, path = tokenization.multipleFiles(fileNames)
-    text = tokenization.tokenizeFiles(fileNames, path)
+    text = tokenization.tokenizeFiles(fileNames, path, documents)
 
+    #Ranker 
+    #documents_ordered = ranker.rank(fileNames, documents)
+    #print(documents_ordered)
+    
     # fileNames, path = tokenization.directory(fileNames)
     # text = tokenization.tokenizeFiles(fileNames, path)
 
@@ -40,6 +45,4 @@ def main():
         print('Filtered Text: ', spacy_entity_preprocessing.extractNamedEntitySpacy(file,["GPE","PERSON"],alreadyNLP = True))
     
    
-
-
 main()

@@ -57,13 +57,14 @@ def multipleFiles(fileNames):
     fileNames = [usrInput]
     while usrInput != "":
         usrInput = input("Enter file name (ENTER to terminate): ")
-        fileNames.append(usrInput)
+        if usrInput != "":
+            fileNames.append(usrInput)
     if pathInput != "": path = pathInput
     return fileNames, path
 
 
 # Tokenizes txt files, run after multipleFiles() or singleFile()
-def tokenizeFiles(fileNames, path):
+def tokenizeFiles(fileNames, path, documents):
     textArray = []
     try:
         for fileName in fileNames:
@@ -71,6 +72,9 @@ def tokenizeFiles(fileNames, path):
             if fileName.endswith(".txt"):
                 with open(os.path.join(path, fileName), encoding='utf-8') as file:
                     text = file.read()
+                    documents[fileName] = {}
+                    documents[fileName]["text"] = text.replace("\n", "") #remove \n from text 
+                    documents[fileName]["score"] = 0
                     textArray.append(text)
             
             elif fileName.endswith(".pdf"):
@@ -80,7 +84,6 @@ def tokenizeFiles(fileNames, path):
                         text += page.extract_text()
                     textArray.append(text)
                     
-            
             elif fileName.endswith(".docx"):
                 text = docx2txt.process(os.path.join(path, fileName))
                 textArray.append(text)

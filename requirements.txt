@@ -37,6 +37,7 @@ spacy-legacy==3.0.8
 srsly==2.4.1
 thinc==8.0.10
 tqdm==4.62.2
+transformers[torch]==4.10.2
 typer==0.4.0
 typing-extensions==3.10.0.2
 urllib3==1.26.6

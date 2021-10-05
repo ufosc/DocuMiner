@@ -8,9 +8,15 @@ import pdfplumber
 import docx2txt
 # nltk.download('punkt')
 
-# Scrapes and Tokenizes txt from URL
+
 def URL():
-    # Scrapes data from URL
+    """
+    Asks user for URL to scrape raw text from
+
+    Returns:
+        raw text in string form 
+    """
+    
     url = input("Enter URL: ")
     try:
         html = requests.get(url)
@@ -19,13 +25,19 @@ def URL():
         sys.exit()
 
     raw = BeautifulSoup(html.text, 'html.parser').get_text()
-    print(raw)
-
     return raw
 
 
-# Pulls filenames from Directory
 def directory(fileNames):
+    """
+    Pulls all .txt, .pdf, and .docx filenames from directory
+
+    Parameters: fileNames - empty array to append to
+
+    Returns: 
+        fileNames - all fileNames from directory
+        path - string containing directory path
+    """
     path = os.getcwd()
     usrInput = input("Enter full path (ENTER for working directory): ")
     if usrInput != "":
@@ -38,10 +50,18 @@ def directory(fileNames):
         print("ERROR: directory not found")
         return fileNames, path
 
-# Generates list of Single or Multiple files
 
 
 def singleFile(fileNames):
+    """
+    Asks user for single file from specific path
+
+    Parameters: fileNames - empty array to append to
+
+    Returns:
+        fileNames - single fileName from specific directory
+        path - string containing directory path containing single file
+    """
     path = os.getcwd
     pathInput = input("Enter directory with file (ENTER for working directory): ")
     usrInput = input("Enter file name: ")
@@ -51,6 +71,15 @@ def singleFile(fileNames):
 
 
 def multipleFiles(fileNames):
+    """
+    Asks user for multiple files from specific path
+
+    Parameters: fileNames - empty array to append to
+
+    Returns:
+        fileNames - array of fileNames from specific directory
+        path - string containing directory path containing multiple files
+    """
     path = os.getcwd
     pathInput = input("Enter directory with files (ENTER for working directory): ")
     usrInput = input("Enter file name: ")
@@ -63,8 +92,18 @@ def multipleFiles(fileNames):
     return fileNames, path
 
 
-# Tokenizes txt files, run after multipleFiles() or singleFile()
-def tokenizeFiles(fileNames, path, documents):
+def getRawText(fileNames, path, documents):
+    """
+    Generates raw text array from given filenames and path
+
+    Parameters: 
+        fileNames - array of fileNames to iterate through
+        path - string containing directory path used to find files
+        documents - 
+
+    Returns:
+        textArray - string array containing all raw text from each file in fileName
+    """
     textArray = []
     try:
         for fileName in fileNames:

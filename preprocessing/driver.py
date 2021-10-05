@@ -17,10 +17,10 @@ def main():
     # text.append(tokenization.URL())
 
     # fileNames, path = tokenization.singleFile(fileNames)
-    # text = tokenization.tokenizeFiles(fileNames, path)
+    # text = tokenization.getRawText(fileNames, path)
 
     fileNames, path = tokenization.multipleFiles(fileNames)
-    text = tokenization.tokenizeFiles(fileNames, path, documents)
+    text = tokenization.getRawText(fileNames, path, documents)
 
     #Question and answering
     # results = question_answer.questionAnswer(fileNames, documents)
@@ -33,7 +33,7 @@ def main():
     #print(documents_ordered)
     
     # fileNames, path = tokenization.directory(fileNames)
-    # text = tokenization.tokenizeFiles(fileNames, path)
+    # text = tokenization.getRawText(fileNames, path)
 
     #Prints Raw Text
     print("Raw Text: ", text)

@@ -2,11 +2,34 @@ import spacy
 from nltk.corpus import stopwords
 
 def tagSpacy(text): #tag the english text
+    """
+    Make text into a Spacy NLP object
+    Add a multiline string
+
+    Prameters:
+        text (str) - multiline string, paragraph or article
+
+    Returns:
+        Spacy nlp object
+    """
     nlp = spacy.load("en_core_web_sm")
     return nlp(text)
 
 
 def extractNamedEntitySpacy(text,entity,alreadyNLP = True): #search for certain entity and return the occurences
+    """
+    Mine specefic key words from a text or nlp object
+
+    Parameters:
+        text (str/nlp) - multiline string, paragraph or article
+        entities (list) - list of the spacy named entities want to mine for ["GPE","PERSON"] for example
+        alreadyNLP (bool) - if orginally string converts to NLP, default is True
+
+    Returns:
+        Multilevel list - list of objects and its entity together
+
+    """
+
     if not alreadyNLP: #fpr entity in spacy entity labels for example "PERSON"
         nlp = spacy.load("en_core_web_sm")
         doc = nlp(text)
@@ -20,6 +43,20 @@ def extractNamedEntitySpacy(text,entity,alreadyNLP = True): #search for certain 
 
 
 def posListSpacy(text,removeStop = True,removePunc = True, alreadyNLP = True,filterTag =""): #returns pos tag list for spacy text
+
+    """
+    Return a part of speech list for spacy, each word assigned a part of speech
+
+    Parameters:
+        text (str/nlp) - multiline string, paragraph or article
+        removeStop (bool) - remove english stopwords, default True
+        removePunc (bool) - remove punctuation, default True
+        filterTag (str) - filter to Spacy parts of speech, nouns, verbs, etc, default does not filter
+
+    Returns:
+        Multilevel list with each word assigned a part of speech
+    """
+
     if not alreadyNLP: #note useless step since with spacy can already recognize pos tag by .tag_
         nlp = spacy.load("en_core_web_sm")
         pos_list = nlp(text)

@@ -17,17 +17,17 @@ def main():
     # text.append(tokenization.URL())
 
     # fileNames, path = tokenization.singleFile(fileNames)
-    # text = tokenization.tokenizeFiles(fileNames, path)
+    # text = tokenization.getRawText(fileNames, path)
 
     fileNames, path = tokenization.multipleFiles(fileNames)
-    text = tokenization.tokenizeFiles(fileNames, path, documents)
+    text = tokenization.getRawText(fileNames, path, documents)
 
     #Ranker 
     #documents_ordered = ranker.rank(fileNames, documents)
     #print(documents_ordered)
     
     # fileNames, path = tokenization.directory(fileNames)
-    # text = tokenization.tokenizeFiles(fileNames, path)
+    # text = tokenization.getRawText(fileNames, path)
 
     #Prints Raw Text
     print("Raw Text: ", text)

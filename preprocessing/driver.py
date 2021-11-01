@@ -22,12 +22,6 @@ def main():
     fileNames, path = tokenization.multipleFiles(fileNames)
     text = tokenization.tokenizeFiles(fileNames, path, documents)
 
-    #Question and answering
-    # results = question_answer.questionAnswer(fileNames, documents)
-    # print("\nInfo: " + str(results))
-    # print("\nAnswer: " + results['answer'])
-    
-
     #Ranker 
     #documents_ordered = ranker.rank(fileNames, documents)
     #print(documents_ordered)

@@ -1,4 +1,4 @@
-import tokenization, spacy_entity_preprocessing, pos_tag
+import tokenization, spacy_entity_preprocessing, pos_tag, question_answer
 import os
 import nltk, spacy
 import en_core_web_sm
@@ -20,6 +20,11 @@ def main():
 
     fileNames, path = tokenization.multipleFiles(fileNames)
     text = tokenization.tokenizeFiles(fileNames, path)
+
+    #Question and answering
+    # results = question_answer.questionAnswer(fileNames, text)
+    # print("\nInfo: " + str(results))
+    # print("\nAnswer: " + results['answer'])
 
     # fileNames, path = tokenization.directory(fileNames)
     # text = tokenization.tokenizeFiles(fileNames, path)

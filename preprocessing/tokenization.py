@@ -4,6 +4,7 @@ import nltk
 import os, sys
 from bs4 import BeautifulSoup
 import requests
+import extraction_keyBERT
 
 
 def main():
@@ -14,16 +15,20 @@ def main():
     
     # UNCOMMENT FOR FUNCTIONS
 
-    words, sentences = URL(words, sentences)
+    # words, sentences = URL(words, sentences)
 
     # singleFile(fileNames)
-    # words, sentences = tokenizeFiles(fileNames, path)
+    # words, sentences, text = tokenizeFiles(fileNames, path)
+    # extraction_keyBERT.create_excel_file(text)
 
-    # fileNames = multipleFiles(fileNames)
-    # words, sentences = tokenizeFiles(fileNames, path)
+    fileNames = multipleFiles(fileNames)
+    words, sentences, text = tokenizeFiles(fileNames, path)
+    extraction_keyBERT.create_excel_file(text)
+    extraction_keyBERT.create_excel_file_similarity(text)
 
     # fileNames, path = directory(fileNames)
-    # words, sentences = tokenizeFiles(fileNames, path)
+    # words, sentences, text = tokenizeFiles(fileNames, path)
+    # extraction_keyBERT.create_excel_file(text)
 
     print('Words: ', words, '\nSentences: ', sentences)
 
@@ -92,10 +97,11 @@ def multipleFiles(fileNames):
 def tokenizeFiles(fileNames, path):
     words = []
     sentences = []
+    text = ""
     try:
         for fileName in fileNames:
             with open(os.path.join(path, fileName), encoding='utf-8') as file:
-                text = file.read()
+                text = text + " " + file.read()
                 words.append(word_tokenize(text))
                 sentences.append(sent_tokenize(text))
 
@@ -104,7 +110,7 @@ def tokenizeFiles(fileNames, path):
     except OSError:
         print(f"OS error trying to open {fileName}")
 
-    return words, sentences
+    return words, sentences, text
 
 
 main()
